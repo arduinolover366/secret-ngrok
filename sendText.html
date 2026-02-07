@@ -1,13 +1,187 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Send Text to Laptop</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 500px;
+    }
+    
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 25px;
+      font-size: 28px;
+    }
+    
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    textarea {
+      width: 100%;
+      resize: vertical;
+      min-height: 200px;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+    
+    textarea:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    button {
+      flex: 1;
+      min-width: 100px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    #sendBtn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    #sendBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    #clearBtn {
+      background: #ff6b6b;
+      color: white;
+    }
+    
+    #clearBtn:hover {
+      background: #ee5a52;
+      transform: translateY(-2px);
+    }
+    
+    #processBtn {
+      background: #51cf66;
+      color: white;
+    }
+    
+    #processBtn:hover {
+      background: #40c057;
+      transform: translateY(-2px);
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      
+      h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      
+      textarea {
+        min-height: 150px;
+        font-size: 16px;
+      }
+      
+      button {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+      
+      .button-group {
+        flex-direction: column;
+      }
+      
+      button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h2>Type on Laptop</h2>
-  <form action="https://overwhelming-insolvably-daniel.ngrok-free.dev/type" method="POST">
-    <textarea name="text" rows="6" cols="40" placeholder="Paste your text here"></textarea><br><br>
-    <button type="submit">Send</button>
-  </form>
+  <div class="container">
+    <h2>TYPE ON LAPTOP</h2>
+    <form action="https://overwhelming-insolvably-daniel.ngrok-free.dev/type" method="POST">
+      <textarea id="textInput" name="text" placeholder="Paste your code here"></textarea>
+      
+      <div class="button-group">
+        <button type="button" id="clearBtn">Clear</button>
+        <button type="button" id="processBtn">Clean Code</button>
+        <button type="submit" id="sendBtn">Send</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const textInput = document.getElementById('textInput');
+    const clearBtn = document.getElementById('clearBtn');
+    const processBtn = document.getElementById('processBtn');
+
+    // Clear button functionality
+    clearBtn.addEventListener('click', function() {
+      if (textInput.value && confirm('Are you sure you want to clear all text?')) {
+        textInput.value = '';
+        textInput.focus();
+      }
+    });
+
+    // Process code: remove comments and indentation
+    processBtn.addEventListener('click', function() {
+      let code = textInput.value;
+      
+      // Remove C-style comments (// ...)
+      code = code.replace(/\/\/.*$/gm, '');
+      
+      // Remove leading whitespace (indentation) from each line
+      code = code.split('\n')
+        .map(line => line.trimStart())
+        .join('\n');
+      
+      // Remove extra blank lines
+      code = code.replace(/^\s*[\r\n]/gm, '');
+      
+      textInput.value = code;
+    });
+  </script>
 </body>
 </html>
